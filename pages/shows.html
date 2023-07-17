@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecture: WEB APIs & axios</title>
     <link rel="stylesheet" href="../styles/styles.css">
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -37,9 +38,10 @@
                 <div class="add-show-form__input-container">
                     <button>Add New TV Show</button>
                 </div>
+            </form>
 
             <div id="tv-shows" class="tv-shows">
-
+                <span class="tv-shows__loading">Loading...</span>
             </div>
         </section>
     <script src="../scripts/shows.js"></script>

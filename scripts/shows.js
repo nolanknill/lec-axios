@@ -1,48 +1,43 @@
-const tvShows = [
-    {
-        title: "Suits",
-        "number-of-episodes": 100,
-        genres: ["drama", "legal"],
-        numberOfSeasons: 10,
-        castMembers: ["Gabriel Macht", "Patrick J. Adams", "Meghan, Duchess of Sussex"],
-        year: 2011,
-        rating: 8,
-        imageSrc: "/assets/images/suits.jpg"
-    },
-    {
-        title: "Game of Thrones",
-        "number-of-episodes": 60,
-        genres: ["fantasy", "disappointing finish"],
-        numberOfSeasons: 8,
-        castMembers: ["Thor Bjornsson", "Kit Harrington",  "Emilia Clarke"],
-        year: 2011,
-        rating: 2,
-        imageSrc: "/assets/images/game-of-thrones.jpeg"
-    },
-    {
-        title: "Teletubbies",
-        "number-of-episodes": 365,
-        genres: ["educational", "children"],
-        numberOfSeasons: 2,
-        castMembers: ["Red", "Yellow",  "Green", "Purple"],
-        year: 2001,
-        rating: 8.91,
-        imageSrc: "/assets/images/teletubbies.jpeg"
-    },
-    {
-        title: "Rick & Morty",
-        rating: 10,
-        imageSrc: "/assets/images/rick-and-morty.png"
-    },
-    // Add new tv show here?
-    // render it to the page somehow, using createTvShowElement
-]
+const SHOWS_ENDPOINT = "https://62f1099325d9e8a2e7c47836.mockapi.io/api/v1/shows";
 
-function displayShows() {
-    /* Add all TV Shows to the tv-shows element */
+/*
+    // Send a request to API to GET the data!
+
+    // .then -> call displayShows, send that function the shows array
+    // .catch -> displayFetchError()
+    displayShows();
+*/
+axios
+    .get(SHOWS_ENDPOINT)
+    .then((response) => {
+        clearShows();
+        const tvShows = response.data;
+        displayShows(tvShows);
+    })
+    .catch((error) => {
+        console.log(error);
+        clearShows();
+        displayFetchError();
+    });
+
+function displayFetchError() {
+    const showsEl = document.getElementById("tv-shows");
+    
+    const errorEl = document.createElement("span");
+    errorEl.innerText = "Service unavailable. Please try again later";
+
+    showsEl.appendChild(errorEl);
+}
+
+function clearShows() {
+     /* Add all TV Shows to the tv-shows element */
+     const tvShowsEl = document.getElementById("tv-shows");
+     tvShowsEl.innerHTML = "";
+}
+
+function displayShows(tvShows) {
     const tvShowsEl = document.getElementById("tv-shows");
-    tvShowsEl.innerHTML = "";
-
+    
     for (let i = 0; i <= tvShows.length - 1; i++) {
         const showEl = createTvShowElement(tvShows[i]);
 
@@ -63,8 +58,6 @@ function displayShows() {
         tvShowsEl.appendChild(showEl);
     }
 }
-
-displayShows();
 
 /*
     Input: show will contain { Title, Rating, Image }
@@ -90,7 +83,7 @@ function createTvShowElement(show) {
     
     const coverEl = document.createElement("img");
     coverEl.classList.add("tv-show__cover");
-    coverEl.setAttribute("src", show.imageSrc);
+    coverEl.setAttribute("src", show.image_src);
     coverEl.setAttribute("alt", show.title + " Cover");
     
     showEl.appendChild(titleEl);
@@ -143,11 +136,24 @@ form.addEventListener("submit", function(event) {
     const newShow = {
         title: title,
         rating: rating,
-        imageSrc: imageUrl
+        image_src: imageUrl
     }
 
-    tvShows.unshift(newShow);
-    displayShows();
+    axios
+        .post(SHOWS_ENDPOINT, newShow)
+        .then(() => { // response param not needed since it isn't used
+            // return a promise to use the response in a .then chain!
+            return axios.get(SHOWS_ENDPOINT);
+        })
+        .then((response) => {
+            clearShows();
+            const tvShows = response.data;
+            displayShows(tvShows);
+        })
+        .catch((error) => {
+            console.log("Error: ", error);
+            alert("Unable to add TV Show. Sorry about it.");
+        })
 
     event.target.reset();
 })
