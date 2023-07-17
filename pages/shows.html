@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture: WEB APIs & axios</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__page-title">Lecture: WEB APIs & axios</h1>
+    </header>
+    <main>
+        <section>
+            <h2 id="title">Cohort's Favourite TV Shows</h2>
+
+            <form class="add-show-form" id="add-show">
+                <div class="add-show-form__input-container">
+                    <label>
+                        Title:
+                        <input type="text" name="title">
+                    </label>
+                    <span class="add-show-form__title-error">Title is required.</span>
+                </div>
+                <div class="add-show-form__input-container">
+                    <label>Rating
+                        <input type="range" min="0" max="10" name="rating">
+                    </label>
+                    <span class="add-show-form__rating-error">Rating must be a number.</span>
+                </div>
+                <div class="add-show-form__input-container">
+                    <label>Image URL:
+                        <input type="url" name="imageUrl">
+                    </label>
+                    <span class="add-show-form__image-url-error">Image URL is required.</span>
+                </div>
+                <div class="add-show-form__input-container">
+                    <button>Add New TV Show</button>
+                </div>
+
+            <div id="tv-shows" class="tv-shows">
+
+            </div>
+        </section>
+    <script src="../scripts/shows.js"></script>
+</body>
+</html>
